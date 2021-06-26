@@ -1,0 +1,19 @@
+@import './variables';
+
+$themes: (
+  light: $light,
+  dark: $dark,
+);
+
+@mixin apply() {
+  @each $theme, $arr in $themes {
+    [data-theme="#{$theme}"] & {
+      $theme_name: $theme !global;
+      @content;
+    }
+  }
+}
+
+@function value($key) {
+  @return map-get(map-get($themes, $theme_name), $key);
+}
