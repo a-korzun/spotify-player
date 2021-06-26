@@ -1,0 +1,55 @@
+@use 'sass:math';
+@use '@/styles/themes';
+
+$height: 40px;
+
+.search {
+  position: relative;
+  width: 300px;
+}
+
+.search__input {
+  border: 0 solid transparent;
+  background-color: transparent;
+  width: 100%;
+  height: $height;
+  border-radius: math.div($height, 2);
+  padding: 0 math.div($height, 2);
+  line-height: $height;
+  font-size: 1rem;
+
+  @include themes.apply() {
+    border: 1px solid themes.value(border-color);
+    color: themes.value(text-color);
+  }
+}
+
+.search__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 1px 0 0 0;
+  padding: 0;
+  list-style: none;
+
+  @include themes.apply() {
+    color: themes.value(text-color);
+    background-color: themes.value(background-color);
+  }
+}
+
+.search__item {
+  padding: 8px math.div($height, 2);
+  cursor: pointer;
+
+  @include themes.apply() {
+    border-bottom: 1px solid themes.value(border-color);
+  }
+
+  &:hover {
+    @include themes.apply() {
+      color: themes.value(active-color);
+    }
+  }
+}
