@@ -12,6 +12,8 @@ $togglerSize: $height - 6;
   height: $height;
   border-radius: math.div($height, 2);
   color: transparent;
+  user-select: none;
+  overflow: hidden;
   cursor: pointer;
 
   @include themes.apply() {

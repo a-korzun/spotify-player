@@ -9,6 +9,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
+  line-height: 1.2;
 
   @include themes.apply() {
     color: themes.value(text-color);
