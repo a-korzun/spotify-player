@@ -1,5 +1,12 @@
+@use '@/styles/mixins';
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @include mixins.media-query (desktop) {
+    width: 1200px;
+    margin: 0 auto;
+  }
 }
