@@ -1,8 +1,8 @@
 @import './variables';
 
 $themes: (
-  light: $light,
-  dark: $dark,
+  light: $light-theme,
+  dark: $dark-theme,
 );
 
 @mixin apply() {

@@ -1,9 +1,13 @@
-$light: (
+$light-theme: (
   background-color: #fff,
   text-color: #000,
+  border-color: #ccc,
+  active-color: blue,
 );
 
-$dark: (
+$dark-theme: (
   background-color: #000,
   text-color: #fff,
+  border-color: #ccc,
+  active-color: red,
 );

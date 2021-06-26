@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import cx from 'classnames';
+
+import './styles.scss';
 
 type Theme = 'dark' | 'light';
 
-function ThemeSwitcher() {
-  const [theme, setTheme] = useState<Theme>(document.documentElement.dataset.theme as Theme || 'light');
+const defaultTheme: Theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
-  const toggleRules: Record<Theme, Theme> = {
-    dark: 'light',
-    light: 'dark',
-  };
+const toggleRules: Record<Theme, Theme> = {
+  dark: 'light',
+  light: 'dark',
+};
+
+function ThemeSwitcher() {
+  const [theme, setTheme] = useState<Theme>(document.documentElement.dataset.theme as Theme || defaultTheme);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
   });
 
+  const handleToggle = () => setTheme(toggleRules[theme]);
+
   return (
-    <button type="button" onClick={() => setTheme(toggleRules[theme])}>
+    <button
+      type="button"
+      className={cx('theme-switcher', `_${theme}`)}
+      onClick={handleToggle}
+    >
       {toggleRules[theme]}
     </button>
   )

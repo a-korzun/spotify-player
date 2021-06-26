@@ -1,0 +1,49 @@
+@use "sass:math";
+@use '@/styles/themes';
+@import '@/styles/variables';
+
+$height: 32px;
+$width: 56px;
+$togglerSize: $height - 6;
+
+.theme-switcher {
+  position: relative;
+  width: $width;
+  height: $height;
+  border-radius: math.div($height, 2);
+  color: transparent;
+  cursor: pointer;
+
+  @include themes.apply() {
+    border: 1px solid themes.value(border-color);
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: $togglerSize;
+    height: $togglerSize;
+    border-radius: math.div($togglerSize, 2);
+    transition: transform .1s ease-out;
+  }
+
+  &._light {
+    background-color: map-get($dark-theme, background-color);
+
+    &:before {
+      background-color: hotpink;
+      transform: translateX(0);
+    }
+  }
+
+  &._dark {
+    background-color: map-get($light-theme, background-color);
+
+    &:before {
+      background-color: gold;
+      transform: translateX(#{$width - $height});
+    }
+  }
+}
