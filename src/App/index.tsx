@@ -6,7 +6,7 @@ import './styles.scss';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Header />
       <header className="App-header">
         <p>
