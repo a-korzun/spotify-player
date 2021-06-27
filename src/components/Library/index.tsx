@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import LybraryItem from '@/components/LibraryItem';
+
+import playlistStore from '@/stores/playlistStore';
+import tracksStore from '@/stores/tracksStore';
 
 import './styles.scss';
 
 function Library() {
-  const items = Array
-    .from({ length: 99 })
-    .map((x, index) => ({ pic: 'https://via.placeholder.com/600/24f355', amount: Math.floor(Math.random() * 100), name: index }));
+  const playlists = playlistStore.playlists;
+  const loadingState = playlistStore.state;
+
+  useEffect(() => {
+    playlistStore.loadPlaylists();
+  }, []);
+
+  const list = playlists.map(x => (
+    <LybraryItem
+      className="library__item"
+      key={x.id}
+      title={x.name}
+      tracksAmount={x.tracksAmout}
+      coverSrc={x.picture}
+      onClick={() => tracksStore.loadTracks(x.id)}
+    />
+  ));
 
   return (
     <ul className="library">
-      {items.map(x => (
-        <LybraryItem
-          key={x.name}
-          className="library__item"
-          title={x.pic}
-          tracksAmount={x.amount}
-          coverSrc={x.pic}
-        />
-      ))}
+      {loadingState === 'pending' && <div className="library__placeholder">Loading...</div>}
+      {loadingState === 'error' && <div className="library__placeholder">Something went wrong</div>}
+      {loadingState === 'done' && list}
     </ul>
-  )
+  );
 }
 
-export default Library;
+export default observer(Library);

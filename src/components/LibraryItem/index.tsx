@@ -7,15 +7,17 @@ interface Props {
   title: string;
   tracksAmount: number;
   coverSrc: string;
+  onClick: () => void;
   className?: string;
 }
 
-function LibraryItem({ title, tracksAmount, coverSrc, className }: Props) {
+function LibraryItem({ title, tracksAmount, coverSrc, onClick, className }: Props) {
   return (
     <li
       className={cx('library-item', className)}
       role="button"
       tabIndex={0}
+      onClick={onClick}
     >
       <div
         className="library-item__cover"

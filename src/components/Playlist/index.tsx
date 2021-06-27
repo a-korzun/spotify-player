@@ -1,31 +1,35 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 import Track from '@/components/Track';
 
+import tracksStore from '@/stores/tracksStore';
+
 import './styles.scss';
 
-function Playlist () {
-  const tracks = Array.from({ length: 99 }, (el, index) => ({
-    index,
-    artists: index % 2 === 0 ? [{ name: 'foo', id: 'foo' }] : [{ name: 'foo', id: 'foo' }, { name: 'bar bzz', id: 'bar bzz' }],
-    duration: Math.floor(Math.random() * 10) * 1000 * 60,
-    name: 'track name track name track name',
-  }));
+function Playlist() {
+  const tracks = tracksStore.tracks;
+  const loadingState = tracksStore.state;
+
+  const list = tracks.map(x => (
+    <Track
+      className="playlist__track"
+      key={x.id}
+      index={x.index}
+      artists={x.artists}
+      duration={x.duration}
+      name={x.name}
+    />
+  ));
 
   return (
     <ul className="playlist">
-      {tracks.map(x => (
-        <Track
-          className="playlist__track"
-          key={x.index}
-          index={x.index}
-          artists={x.artists}
-          duration={x.duration}
-          name={x.name}
-        />
-      ))}
+      {loadingState === 'idle' && <div className="playlist__placeholder">Select playlist to load tracks</div>}
+      {loadingState === 'pending' && <div className="playlist__placeholder">Loading...</div>}
+      {loadingState === 'error' && <div className="playlist__placeholder">Error</div>}
+      {loadingState === 'done' && list}
     </ul>
   )
 }
 
-export default Playlist;
+export default observer(Playlist);

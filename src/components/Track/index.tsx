@@ -4,12 +4,6 @@ import cx from 'classnames';
 import Modal from '@/components/Modal';
 
 import './styles.scss';
-
-interface Artist {
-  id: string;
-  name: string;
-}
-
 interface Props {
   index: number;
   artists: Artist[];
