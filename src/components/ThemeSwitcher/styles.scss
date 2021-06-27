@@ -10,15 +10,12 @@ $togglerSize: $height - 6;
   position: relative;
   width: $width;
   height: $height;
+  border: 1px solid transparent;
   border-radius: math.div($height, 2);
   color: transparent;
   user-select: none;
   overflow: hidden;
   cursor: pointer;
-
-  @include themes.apply() {
-    border: 1px solid themes.value(border-color);
-  }
 
   &:before {
     content: '';
@@ -35,7 +32,7 @@ $togglerSize: $height - 6;
     background-color: map-get($dark-theme, background-color);
 
     &:before {
-      background-color: hotpink;
+      background-color: Hotpink;
       transform: translateX(0);
     }
   }
@@ -44,7 +41,7 @@ $togglerSize: $height - 6;
     background-color: map-get($light-theme, background-color);
 
     &:before {
-      background-color: gold;
+      background-color: Gold;
       transform: translateX(#{$width - $height});
     }
   }

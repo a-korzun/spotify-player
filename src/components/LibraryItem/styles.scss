@@ -29,7 +29,7 @@
   padding: 8px;
 
   @include themes.apply() {
-    background-color: rgba(themes.value(background-color), .3);
+    background-color: rgba(themes.value(background-color), .5);
     color: themes.value(text-color);
   }
 }

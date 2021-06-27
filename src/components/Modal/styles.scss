@@ -17,18 +17,14 @@
   left: 0;
   right: 0;
   z-index: 1;
-
-  @include themes.apply() {
-    background-color: rgba(themes.value(background-color), .7);
-  }
 }
 
-[data-theme="dark"].modal__backdrop {
-  background-color: map-get($light-theme, background-color);
+[data-theme="dark"] .modal__backdrop {
+  background-color:  rgba(map-get($light-theme, background-color), .7);
 }
 
-[data-theme="light"].modal__backdrop {
-  background-color: map-get($dark-theme, background-color);
+[data-theme="light"] .modal__backdrop {
+  background-color:  rgba(map-get($dark-theme, background-color), .7);
 }
 
 .modal__container {
