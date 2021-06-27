@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import Track from '@/components/Track';
@@ -10,6 +10,22 @@ import './styles.scss';
 function Playlist() {
   const tracks = tracksStore.tracks;
   const loadingState = tracksStore.state;
+
+  const handleScroll = (event: Event) => {
+    const { scrollTop, clientHeight,  scrollHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight === scrollHeight) {
+      tracksStore.loadMore();
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   const list = tracks.map((x, index) => (
     <Track
@@ -27,7 +43,7 @@ function Playlist() {
       {loadingState === 'idle' && <div className="playlist__placeholder">Select playlist to load tracks</div>}
       {loadingState === 'pending' && <div className="playlist__placeholder">Loading...</div>}
       {loadingState === 'error' && <div className="playlist__placeholder">Error</div>}
-      {loadingState === 'done' && list}
+      {list.length && list}
     </ul>
   )
 }

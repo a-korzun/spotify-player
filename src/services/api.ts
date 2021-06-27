@@ -27,8 +27,8 @@ export async function fetchPlaylist(accessToken: string, playlistID: string): Pr
   return data;
 }
 
-export async function fetchTracks(accessToken: string, playlistID: string): Promise<RawTracks> {
-  const data = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
+export async function fetchTracks(accessToken: string, playlistID: string, offset = 0): Promise<RawTracks> {
+  const data = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?offset=${offset}`, {
     method: 'get',
     headers: {
       'Authorization': `Bearer ${accessToken}`,

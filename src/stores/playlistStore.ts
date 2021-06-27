@@ -8,6 +8,16 @@ const predefinedPlaylists = [
   '37i9dQZF1DWXRqgorJj26U',
   '37i9dQZF1DWWGFQLoP9qlv',
   '37i9dQZEVXbKCF6dqVpDkS',
+  '37i9dQZF1DX2RxBh64BHjQ',
+  '37i9dQZF1DWWqNV5cS50j6',
+  '65xSncKQzG6Suseh5gfYP1',
+  '37i9dQZF1DX4JAvHpjipBk',
+  '6fO3gSb2WXw6hgqY7nDe2C',
+  '37i9dQZF1DXcWxeqLvgOCi',
+  '37i9dQZF1DXc8kgYqQLMfH',
+  '5Xtj5QwZG7WzDY1C5wozcL',
+  '37i9dQZF1DWWjGdmeTyeJ6',
+  '37i9dQZF1DX6mMeq1VVekF',
 ];
 
 class PlaylistStore {
