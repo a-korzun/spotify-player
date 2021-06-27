@@ -11,11 +11,11 @@ function Playlist() {
   const tracks = tracksStore.tracks;
   const loadingState = tracksStore.state;
 
-  const list = tracks.map(x => (
+  const list = tracks.map((x, index) => (
     <Track
       className="playlist__track"
       key={x.id}
-      index={x.index}
+      index={index + 1}
       artists={x.artists}
       duration={x.duration}
       name={x.name}

@@ -21,7 +21,7 @@ function Library() {
       className="library__item"
       key={x.id}
       title={x.name}
-      tracksAmount={x.tracksAmout}
+      tracksAmount={x.tracksAmount}
       coverSrc={x.picture}
       onClick={() => tracksStore.loadTracks(x.id)}
     />

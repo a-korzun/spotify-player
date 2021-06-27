@@ -12,6 +12,21 @@ interface Props {
   className?: string;
 }
 
+
+
+function formatDuration(ms: number): string {
+  const leadZero = (x: string) => {
+    return x.length === 1 ? x.padStart(2, '0') : x;
+  }
+
+  const durationInSec = ms / 1000;
+
+  const minutes = String(Math.floor(durationInSec / 60));
+  const seconds = String(Math.floor(durationInSec % 60));
+
+  return `${leadZero(minutes)}:${leadZero(seconds)}`;
+}
+
 function Track({ index, artists, duration, name, className }: Props) {
   const [infoOpen, setInfoOpen] = useState<boolean>(false);
 
@@ -26,7 +41,7 @@ function Track({ index, artists, duration, name, className }: Props) {
         className="track__col track__artist"
         onClick={() => setInfoOpen(true)}
       >{artist}</div>
-      <div className="track__col track__duration">{duration / 1000 / 60}</div>
+      <div className="track__col track__duration">{formatDuration(duration)}</div>
 
       <Modal open={infoOpen} onClose={() => setInfoOpen(false)}>
         {artist}
