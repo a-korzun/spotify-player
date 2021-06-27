@@ -18,11 +18,11 @@ interface processedTracks {
 
 export function processTracks(raw: RawTracks): processedTracks {
   return {
-    tracks: raw.tracks.items.map(t => ({
+    tracks: raw.items.map(t => ({
       id: t.track.id,
       index: t.track.track_number,
       name: t.track.name,
-      artists: t.track.artists.map(a => ({ name: a.name, id: a.id })),
+      artists: t.track.artists.map(a => ({ id: a.id, name: a.name })),
       duration: t.track.duration_ms,
       url: t.track.href,
     })),

@@ -1,4 +1,4 @@
-import { fetchPlaylist } from '@/services/api';
+import { fetchTracks } from '@/services/api';
 import { processTracks } from '@/services/dataFormatters';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 
@@ -27,7 +27,7 @@ class TracksStore {
     }
 
     try {
-      const data = await fetchPlaylist(authStore.accessToken, playlistID);
+      const data = await fetchTracks(authStore.accessToken, playlistID);
       const { tracks, limit, offset, total } = processTracks(data);
 
       runInAction(() => {

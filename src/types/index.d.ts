@@ -9,16 +9,13 @@ interface Track {
   id: string;
   index: number;
   name: string;
-  artists: Artist[];
+  artists: Array<{
+    id: string;
+    name: string;
+  }>;
   duration: number;
   url: string;
 }
-
-interface Artist {
-  id: string;
-  name: string;
-}
-
 interface RawPlaylist {
   id: string;
   name: string;
@@ -31,19 +28,27 @@ interface RawPlaylist {
 }
 
 interface RawTracks {
-  tracks: {
-    items: Array<{
-      track: {
-        id: string;
-        name: string;
-        track_number: number;
-        href: string;
-        duration_ms: number;
-        artists: Array<Artist>
-      }
-    }>;
-  };
+  items: Array<{
+    track: {
+      id: string;
+      name: string;
+      track_number: number;
+      href: string;
+      duration_ms: number;
+      artists: Array<{ id: string, name: string }>
+    }
+  }>;
   limit: number;
   offset: number;
   total: number;
+}
+
+interface Artist {
+  id: string;
+  name: string;
+  genres: string[];
+}
+
+interface RawArtists {
+  artists: Array<Artist>;
 }

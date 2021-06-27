@@ -1,4 +1,4 @@
-export async function retrieveAccessToken() {
+export async function retrieveAccessToken(): Promise<string> {
   const accessToken = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     credentials: 'include',
@@ -15,7 +15,7 @@ export async function retrieveAccessToken() {
   return accessToken;
 }
 
-export async function fetchPlaylist(accessToken: string, playlistID: string) {
+export async function fetchPlaylist(accessToken: string, playlistID: string): Promise<RawPlaylist> {
   const data = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}`, {
     method: 'get',
     headers: {
@@ -27,8 +27,21 @@ export async function fetchPlaylist(accessToken: string, playlistID: string) {
   return data;
 }
 
-export async function fetchTracks(accessToken: string, playlistID: string): Promise<Track[]> {
+export async function fetchTracks(accessToken: string, playlistID: string): Promise<RawTracks> {
   const data = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  })
+    .then(res => res.json())
+
+    return data;
+}
+
+
+export async function fetchArtists(accessToken: string, ids: string[]): Promise<RawArtists> {
+  const data = await fetch(`https://api.spotify.com/v1/artists?ids=${ids.join(',')}`, {
     method: 'get',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
