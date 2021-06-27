@@ -1,0 +1,32 @@
+@use '@/styles/themes';
+
+.playlist {
+  position: relative;
+  margin: 0 -16px;
+  padding: 0 16px;
+  list-style: none;
+  min-height: 100px;
+}
+
+.playlist__track {
+  @include themes.apply() {
+    border-bottom: 1px solid themes.value(border-color);
+  }
+
+  &:hover {
+    @include themes.apply() {
+      color: themes.value(active-color);
+    }
+  }
+
+  &:last-child {
+    border-bottom: 0 solid transparent;
+  }
+}
+
+.playlist__placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}

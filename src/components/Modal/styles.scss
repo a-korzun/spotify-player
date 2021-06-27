@@ -1,0 +1,68 @@
+@use '@/styles/themes';
+@import '@/styles/variables';
+
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.modal__backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  @include themes.apply() {
+    background-color: rgba(themes.value(background-color), .7);
+  }
+}
+
+[data-theme="dark"].modal__backdrop {
+  background-color: map-get($light-theme, background-color);
+}
+
+[data-theme="light"].modal__backdrop {
+  background-color: map-get($dark-theme, background-color);
+}
+
+.modal__container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 400px;
+  min-height: 350px;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 0 16px rgba(0,0,0, .3);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  @include themes.apply() {
+    background-color: themes.value(background-color);
+    color: themes.value(text-color);
+  }
+}
+
+.modal__head {
+  text-align: right;
+}
+
+.modal__close {
+  padding: 8px;
+  margin: 0;
+  background-color: transparent;
+  border: 0 solid transparent;
+  font-size: 1rem;
+  line-height: 1rem;
+  cursor: pointer ;
+
+  @include themes.apply() {
+    color: themes.value(text-color);
+  }
+}

@@ -1,0 +1,32 @@
+.track {
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+}
+
+.track__number {
+  width: 10%;
+}
+
+.track__name {
+  width: 35%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.track__artist {
+  width: 35%;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.track__duration {
+  width: 10%;
+}
+
+.track__player {
+  width: 10%;
+}
