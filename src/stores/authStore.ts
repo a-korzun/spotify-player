@@ -2,7 +2,7 @@ import { makeObservable, observable, runInAction, action } from 'mobx';
 
 import { retrieveAccessToken } from '@/services/api';
 
-class AuthToken {
+class AuthStore {
   accessToken: string | undefined;
   state: 'idle' | 'pending' | 'done' | 'error' = 'idle';
 
@@ -34,4 +34,4 @@ class AuthToken {
   }
 }
 
-export default new AuthToken();
+export default new AuthStore();

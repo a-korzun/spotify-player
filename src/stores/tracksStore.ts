@@ -4,7 +4,7 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 
 import authStore from './authStore';
 
-class TracksStore {
+export class TracksStore {
   tracks: Track[] = [];
   state: 'idle' | 'pending' | 'done' | 'error' = 'idle';
   offset: number = 0;

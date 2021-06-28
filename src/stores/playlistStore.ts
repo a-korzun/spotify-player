@@ -20,7 +20,7 @@ const predefinedPlaylists = [
   '37i9dQZF1DX6mMeq1VVekF',
 ];
 
-class PlaylistStore {
+export class PlaylistStore {
   playlists: Playlist[] = [];
   state: 'idle' | 'pending' | 'done' | 'error' = 'idle';
   offset: number = 0;

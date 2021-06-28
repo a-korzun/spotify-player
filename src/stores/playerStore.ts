@@ -1,9 +1,9 @@
-import { fetchAudio } from '@/services/api';
 import { makeObservable, observable, action, runInAction } from 'mobx';
+import { fetchAudio } from '@/services/api';
 
 import authStore from './authStore';
 
-class PlayerStore {
+export class PlayerStore {
   trackID: string = '';
   trackName: string = '';
   playState: 'play' | 'pause' = 'pause';

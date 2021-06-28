@@ -4,7 +4,7 @@ import { fetchArtists } from '@/services/api';
 
 import authStore from './authStore';
 
-class ArtistsStore {
+export class ArtistsStore {
   artists: Artist[] = [];
   state: 'idle' | 'pending' | 'done' | 'error' = 'idle';
 
