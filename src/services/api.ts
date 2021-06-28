@@ -36,7 +36,7 @@ export async function fetchTracks(accessToken: string, playlistID: string, offse
   })
     .then(res => res.json())
 
-    return data;
+  return data;
 }
 
 
@@ -49,5 +49,17 @@ export async function fetchArtists(accessToken: string, ids: string[]): Promise<
   })
     .then(res => res.json())
 
-    return data;
+  return data;
+}
+
+export async function fetchAudio(accessToken: string, id: string) {
+  const data = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  })
+    .then(res => res.json());
+
+  return data.preview_url;
 }

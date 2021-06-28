@@ -14,7 +14,12 @@ interface Track {
     name: string;
   }>;
   duration: number;
-  url: string;
+}
+
+interface Artist {
+  id: string;
+  name: string;
+  genres: string[];
 }
 interface RawPlaylist {
   id: string;
@@ -35,7 +40,7 @@ interface RawTracks {
       track_number: number;
       href: string;
       duration_ms: number;
-      artists: Array<{ id: string, name: string }>
+      artists: Array<{ id: string, name: string }>;
     }
   }>;
   limit: number;
@@ -43,12 +48,10 @@ interface RawTracks {
   total: number;
 }
 
-interface Artist {
-  id: string;
-  name: string;
-  genres: string[];
-}
-
 interface RawArtists {
   artists: Array<Artist>;
+}
+
+interface Window {
+  webkitAudioContext: Window['AudioContext'];
 }

@@ -24,7 +24,6 @@ export function processTracks(raw: RawTracks): processedTracks {
       name: t.track.name,
       artists: t.track.artists.map(a => ({ id: a.id, name: a.name })),
       duration: t.track.duration_ms,
-      url: t.track.href,
     })),
     limit: raw.limit,
     total: raw.total,

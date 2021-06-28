@@ -35,6 +35,7 @@ function Playlist() {
       artists={x.artists}
       duration={x.duration}
       name={x.name}
+      id={x.id}
     />
   ));
 
@@ -43,7 +44,7 @@ function Playlist() {
       {loadingState === 'idle' && <div className="playlist__placeholder">Select playlist to load tracks</div>}
       {loadingState === 'pending' && <div className="playlist__placeholder">Loading...</div>}
       {loadingState === 'error' && <div className="playlist__placeholder">Error</div>}
-      {list.length && list}
+      {list.length > 0 && list}
     </ul>
   )
 }
