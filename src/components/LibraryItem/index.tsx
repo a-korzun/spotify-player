@@ -1,5 +1,4 @@
 import React from 'react';
-import cx from 'classnames';
 
 import './styles.scss';
 
@@ -14,7 +13,7 @@ interface Props {
 function LibraryItem({ title, tracksAmount, coverSrc, onClick, className }: Props) {
   return (
     <li
-      className={cx('library-item', className)}
+      className={`library-item ${className}`}
       role="button"
       tabIndex={0}
       onClick={onClick}

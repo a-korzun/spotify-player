@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import cx from 'classnames';
 
 import './styles.scss';
 
@@ -24,7 +23,7 @@ function ThemeSwitcher() {
   return (
     <button
       type="button"
-      className={cx('theme-switcher', `_${theme}`)}
+      className={`theme-switcher _${theme}`}
       onClick={handleToggle}
     >
       {toggleRules[theme]}

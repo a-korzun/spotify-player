@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import cx from 'classnames';
 
 import Modal from '@/components/Modal';
 import Player from '@/components/Player';
@@ -29,7 +28,7 @@ function Track({ index, artists, duration, name, id, className }: Props) {
   }
 
   return (
-    <li className={cx('track', className)}>
+    <li className={`track ${className}`}>
       <div className="track__number">{index}</div>
       <div className="track__player"><Player name={name} id={id} /></div>
       <div className="track__name">{name}</div>
