@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
 
 import Visualizer from '@/components/Visualizer';
 import { PlaylistStore } from '@/stores/playlistStore';
@@ -127,4 +126,4 @@ function Player({ name, id, url }: Props) {
   )
 }
 
-export default observer(Player);
+export default Player;
