@@ -1,20 +1,20 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 
-import playerStore from '@/stores/playerStore';
-
 import './styles.scss';
+import { PlaylistStore } from '@/stores/playlistStore';
 
 function Header () {
+  const { state } = useContext(PlaylistStore);
+
   return (
     <header className="header">
       <h1 className="header__title">Spotify Player</h1>
-      {playerStore.playState === 'play' && <p className="header__current-track">{playerStore.trackName}</p>}
+      {state.isPlaying === true && <p className="header__current-track">{state.activeTrackName}</p>}
       <ThemeSwitcher />
     </header>
   )
 }
 
-export default observer(Header);
+export default Header;

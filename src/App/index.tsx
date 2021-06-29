@@ -1,33 +1,48 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect } from 'react';
 
 import Header from '@/components/Header';
 import Library from '@/components/Library';
 import Playlist from '@/components/Playlist';
 
-import authStore from '@/stores/authStore';
-import playlistStore from '@/stores/playlistStore';
+import { AuthStoreProvider, AuthStore } from '@/stores/authStore';
+import { PlaylistStoreProvider } from '@/stores/playlistStore';
+import { retrieveAccessToken } from '@/services/api';
 
 import './styles.scss';
 
 function App() {
-  const authState = authStore.state;
-  const playlists = playlistStore.playlists;
-  const playlistsLoadingState = playlistStore.state;
+  return (
+    <AuthStoreProvider>
+      <PlaylistStoreProvider>
+        <Layout />
+      </PlaylistStoreProvider>
+    </AuthStoreProvider>
+  );
+}
+
+function Layout() {
+  const { state: authState, dispatch } = useContext(AuthStore);
 
   useEffect(() => {
-    authStore.fetchToken();
-  }, [])
+    const init = async () => {
+      dispatch({ type: 'UPDATE_STATE', payload: 'pending' });
+      const token = await retrieveAccessToken();
+      dispatch({ type: 'UPDATE_TOKEN', payload: token });
+      dispatch({ type: 'UPDATE_STATE', payload: 'done' });
+    }
+
+    init();
+  }, []);
 
   return (
     <div className="app">
       <Header />
-      {authState === 'pending' && <span key="pending">Authentication...</span>}
-      {authState === 'done' && <Library />}
-      {authState === 'done' && playlistsLoadingState === 'done' && playlists.length > 0 && <Playlist />}
-      {authState === 'error' && <span key="error">Authentication failed</span>}
+      {authState.loadingState === 'pending' && <span key="pending">Authentication...</span>}
+      {authState.loadingState === 'done' && <Library />}
+      <Playlist />
+      {authState.loadingState === 'error' && <span key="error">Authentication failed</span>}
     </div>
-  );
+  )
 }
 
-export default observer(App);
+export default App;

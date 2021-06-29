@@ -14,17 +14,13 @@ function Modal({ open = false, onClose, children }: ModalProps) {
     return null;
   }
 
-  function handleClose() {
-    onClose();
-  }
-
   return (
     <Portal>
       <div className="modal">
-        <div className="modal__backdrop" onClick={handleClose} />
+        <div className="modal__backdrop" onClick={onClose} />
         <div className="modal__container">
           <div className="modal__head">
-            <button className="modal__close" onClick={handleClose}>❌</button>
+            <button className="modal__close" onClick={onClose}>❌</button>
           </div>
           <div className="modal__body">
             { children }

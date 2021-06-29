@@ -15,7 +15,7 @@ export async function retrieveAccessToken(): Promise<string> {
   return accessToken;
 }
 
-export async function fetchPlaylist(accessToken: string, playlistID: string): Promise<RawPlaylist> {
+export async function fetchPlaylist(accessToken: string, playlistID: string): Promise<PlaylistPreview> {
   const data = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}`, {
     method: 'get',
     headers: {
@@ -27,7 +27,7 @@ export async function fetchPlaylist(accessToken: string, playlistID: string): Pr
   return data;
 }
 
-export async function fetchTracks(accessToken: string, playlistID: string, offset = 0): Promise<RawTracks> {
+export async function fetchTracks(accessToken: string, playlistID: string, offset = 0): Promise<Playlist> {
   const data = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks?offset=${offset}`, {
     method: 'get',
     headers: {
@@ -40,7 +40,7 @@ export async function fetchTracks(accessToken: string, playlistID: string, offse
 }
 
 
-export async function fetchArtists(accessToken: string, ids: string[]): Promise<RawArtists> {
+export async function fetchArtists(accessToken: string, ids: string[]): Promise<{ artists: Artist[] }> {
   const data = await fetch(`https://api.spotify.com/v1/artists?ids=${ids.join(',')}`, {
     method: 'get',
     headers: {
@@ -50,16 +50,4 @@ export async function fetchArtists(accessToken: string, ids: string[]): Promise<
     .then(res => res.json())
 
   return data;
-}
-
-export async function fetchAudio(accessToken: string, id: string) {
-  const data = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
-    method: 'get',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-    },
-  })
-    .then(res => res.json());
-
-  return data.preview_url;
 }

@@ -3,14 +3,12 @@ import React from 'react';
 import './styles.scss';
 
 interface Props {
-  title: string;
-  tracksAmount: number;
-  coverSrc: string;
+  preview: PlaylistPreview;
   onClick: () => void;
   className?: string;
 }
 
-function LibraryItem({ title, tracksAmount, coverSrc, onClick, className }: Props) {
+function LibraryItem({ preview, onClick, className }: Props) {
   return (
     <li
       className={`library-item ${className}`}
@@ -20,11 +18,11 @@ function LibraryItem({ title, tracksAmount, coverSrc, onClick, className }: Prop
     >
       <div
         className="library-item__cover"
-        style={{ backgroundImage: `url(${coverSrc})` }}
+        style={{ backgroundImage: `url(${preview.images[0].url})` }}
       >
-        <span className="library-item__badge">{tracksAmount}</span>
+        <span className="library-item__badge">{preview.tracks.total}</span>
         <div className="library-item__footer">
-          <h3 className="library-item__title">{title}</h3>
+          <h3 className="library-item__title">{preview.name}</h3>
         </div>
       </div>
     </li>

@@ -1,19 +1,9 @@
-interface Playlist {
-  id: string;
-  name: string;
-  picture: string;
-  tracksAmount: number;
-}
-
 interface Track {
   id: string;
-  index: number;
   name: string;
-  artists: Array<{
-    id: string;
-    name: string;
-  }>;
-  duration: number;
+  preview_url: string;
+  duration_ms: number;
+  artists: Array<Omit<Artist, 'genres'>>;
 }
 
 interface Artist {
@@ -21,7 +11,8 @@ interface Artist {
   name: string;
   genres: string[];
 }
-interface RawPlaylist {
+
+interface PlaylistPreview {
   id: string;
   name: string;
   tracks: {
@@ -32,24 +23,12 @@ interface RawPlaylist {
   }>;
 }
 
-interface RawTracks {
+interface Playlist {
   items: Array<{
-    track: {
-      id: string;
-      name: string;
-      track_number: number;
-      href: string;
-      duration_ms: number;
-      artists: Array<{ id: string, name: string }>;
-    }
+    track: Track;
   }>;
   limit: number;
-  offset: number;
   total: number;
-}
-
-interface RawArtists {
-  artists: Array<Artist>;
 }
 
 interface Window {

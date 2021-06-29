@@ -1,41 +1,94 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useEffect, useContext, useState } from 'react';
 
 import Track from '@/components/Track';
-
-import tracksStore from '@/stores/tracksStore';
+import { AuthStore } from '@/stores/authStore';
+import { PlaylistStore } from '@/stores/playlistStore';
+import { fetchTracks } from '@/services/api';
+import debounce from '@/debounce';
 
 import './styles.scss';
 
 function Playlist() {
-  const tracks = tracksStore.tracks;
-  const loadingState = tracksStore.state;
+  const [loadingState, setLoadingState] = useState<'idle' | 'pending' | 'done' | 'error'>('idle');
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [offset, setOffset] = useState<number>(0);
 
-  const handleScroll = (event: Event) => {
-    const { scrollTop, clientHeight,  scrollHeight } = document.documentElement;
+  const { activePlaylistID } = useContext(PlaylistStore).state;
+  const { accessToken } = useContext(AuthStore).state;
 
-    if (scrollTop + clientHeight === scrollHeight) {
-      tracksStore.loadMore();
-    }
-  }
 
   useEffect(() => {
+    const loadTracks = async () => {
+      if (!activePlaylistID) {
+        return;
+      }
+
+      setLoadingState('pending');
+
+      try {
+        const { items, limit, total } = await fetchTracks(accessToken, activePlaylistID);
+
+        setTracks(items.map(({ track }) => track));
+
+        setOffset(limit);
+        setTotal(total);
+
+        setLoadingState('done');
+      } catch (err) {
+        setLoadingState('error');
+        console.error(err);
+      }
+    }
+
+    loadTracks();
+  }, [activePlaylistID]);
+
+  useEffect(() => {
+    const loadMore = debounce(async () => {
+      if (loadingState === 'pending') {
+        return;
+      }
+
+      if (tracks.length >= total) {
+        return;
+      }
+
+      setLoadingState('pending');
+
+      try {
+        const { items, limit } = await fetchTracks(accessToken, activePlaylistID, offset);
+
+        setTracks([...tracks, ...items.map(({ track }) => track)]);
+        setOffset(offset + limit);
+        setLoadingState('done');
+      } catch (err) {
+        console.error(err);
+        setLoadingState('error');
+      }
+    }, 500);
+
+    const handleScroll = (event: Event) => {
+      const { scrollTop, clientHeight,  scrollHeight } = document.documentElement;
+
+      if ((scrollTop + clientHeight) === scrollHeight) {
+        loadMore();
+      }
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  })
 
-  const list = tracks.map((x, index) => (
+  const list = tracks.map((track, index) => (
     <Track
       className="playlist__track"
-      key={x.id}
+      key={track.id}
       index={index + 1}
-      artists={x.artists}
-      duration={x.duration}
-      name={x.name}
-      id={x.id}
+      track={track}
     />
   ));
 
@@ -49,4 +102,4 @@ function Playlist() {
   )
 }
 
-export default observer(Playlist);
+export default Playlist;

@@ -1,29 +1,67 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useEffect, useState, useContext } from 'react';
 
 import LybraryItem from '@/components/LibraryItem';
 
-import playlistStore from '@/stores/playlistStore';
-import tracksStore from '@/stores/tracksStore';
+import { PlaylistStore } from '@/stores/playlistStore';
+import { AuthStore } from '@/stores/authStore';
+import { fetchPlaylist } from '@/services/api';
 
 import './styles.scss';
 
+const predefinedPlaylists = [
+  '37i9dQZF1DWXRqgorJj26U',
+  '37i9dQZF1DWWGFQLoP9qlv',
+  '37i9dQZEVXbKCF6dqVpDkS',
+  '37i9dQZF1DX2RxBh64BHjQ',
+  '37i9dQZF1DWWqNV5cS50j6',
+  '65xSncKQzG6Suseh5gfYP1',
+  '37i9dQZF1DX4JAvHpjipBk',
+  '6fO3gSb2WXw6hgqY7nDe2C',
+  '37i9dQZF1DXcWxeqLvgOCi',
+  '37i9dQZF1DXc8kgYqQLMfH',
+  '5Xtj5QwZG7WzDY1C5wozcL',
+  '37i9dQZF1DWWjGdmeTyeJ6',
+  '37i9dQZF1DX6mMeq1VVekF',
+];
+
 function Library() {
-  const playlists = playlistStore.playlists;
-  const loadingState = playlistStore.state;
+  const [loadingState, setLoadingState] = useState<'idle' | 'pending' | 'done' | 'error'>('idle');
+  const [playlists, setPlaylists] = useState<PlaylistPreview[]>([]);
+
+  const { accessToken } = useContext(AuthStore).state;
+  const { dispatch } = useContext(PlaylistStore);
 
   useEffect(() => {
-    playlistStore.loadPlaylists();
+    const init = async () => {
+      setLoadingState('pending');
+
+      try {
+        const queue = predefinedPlaylists.map(id => fetchPlaylist(accessToken, id));
+        const playlists = await Promise.all(queue);
+
+        setPlaylists(playlists);
+
+        setLoadingState('done');
+      } catch (err) {
+        setLoadingState('error');
+
+        console.error(err);
+      }
+    }
+
+    init()
   }, []);
 
-  const list = playlists.map(x => (
+  const handleSelectPlaylist = (id: string) => {
+    dispatch({ type: 'UPDATE_PLAYLIST_ID', payload: id })
+  }
+
+  const list = playlists.map(preview => (
     <LybraryItem
       className="library__item"
-      key={x.id}
-      title={x.name}
-      tracksAmount={x.tracksAmount}
-      coverSrc={x.picture}
-      onClick={() => tracksStore.loadTracks(x.id)}
+      key={preview.id}
+      preview={preview}
+      onClick={() => handleSelectPlaylist(preview.id)}
     />
   ));
 
@@ -36,4 +74,4 @@ function Library() {
   );
 }
 
-export default observer(Library);
+export default Library;

@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useEffect, useContext } from 'react';
 
-import playerStore from '@/stores/playerStore';
-
+import { PlaylistStore } from '@/stores/playlistStore';
 interface Props {
+  audio?: HTMLAudioElement;
   className?: string;
+  onDestroy?: () => void;
 }
 
-function Visualizer({ className }: Props) {
+function Visualizer({ className, audio, onDestroy }: Props) {
+  const { state } = useContext(PlaylistStore);
   const canvasRef = React.createRef<HTMLCanvasElement>();
-  const audio = playerStore.audio;
-  const playState = playerStore.playState;
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const audio = playerStore.audio;
 
     if (!canvas || !audio) {
       return;
@@ -75,13 +73,13 @@ function Visualizer({ className }: Props) {
       audioCtx.close();
 
       // In order to avoid bug with reusing same audio element, I decided to reinit audio object here
-      playerStore.reInitAudio();
+      onDestroy && onDestroy();
     }
-  }, [canvasRef, audio, playState]);
+  }, [state.activeTrackID]);
 
   return (
     <canvas className={className} width="100" height="30" ref={canvasRef} />
   );
 }
 
-export default observer(Visualizer);
+export default Visualizer;

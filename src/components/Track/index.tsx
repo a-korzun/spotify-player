@@ -1,49 +1,62 @@
-import React, { useState } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useState, useContext } from 'react';
 
 import Modal from '@/components/Modal';
 import Player from '@/components/Player';
-import artistsStore from '@/stores/artistsStore';
+import { fetchArtists } from '@/services/api';
+import { AuthStore } from '@/stores/authStore';
+
 
 import './styles.scss';
 
 interface Props {
   index: number;
-  artists: Track['artists'];
-  duration: number;
-  name: string;
-  id: string;
+  track: Track;
   className?: string;
 }
 
-function Track({ index, artists, duration, name, id, className }: Props) {
+function Track({ index, track, className }: Props) {
+  const [loadingState, setLoadingState] = useState<'idle' | 'pending' | 'done' | 'error'>('idle');
+  const [artists, setArtists] = useState<Artist[]>([]);
   const [infoOpen, setInfoOpen] = useState<boolean>(false);
 
-  const loadingState = artistsStore.state;
-  const artistsMeta = artistsStore.artists;
+  const { accessToken } = useContext(AuthStore).state;
+
+  const loadArtists  = async (ids: string[]) => {
+    setInfoOpen(true);
+
+    setLoadingState('pending');
+    try {
+      const { artists } = await fetchArtists(accessToken, ids);
+      setArtists(artists.map(({ id, name, genres }) => ({ id, name, genres })));
+
+      setLoadingState('done');
+    } catch (err) {
+      setLoadingState('error');
+      console.error(err);
+    }
+  };
 
   const handleArtistClick = () => {
-    setInfoOpen(true);
-    artistsStore.loadArtists(artists.map(x => x.id));
-  }
+    loadArtists(track.artists.map(x => x.id));
+  };
 
   return (
     <li className={`track ${className}`}>
       <div className="track__number">{index}</div>
-      <div className="track__player"><Player name={name} id={id} /></div>
-      <div className="track__name">{name}</div>
+      <div className="track__player"><Player name={track.name} id={track.id} url={track.preview_url} /></div>
+      <div className="track__name">{track.name}</div>
       <div
         className="track__artist"
         onClick={handleArtistClick}
       >
-        {artists.map(x => x.name).join(' & ')}
+        {track.artists.map(x => x.name).join(' & ')}
       </div>
-      <div className="track__duration">{formatDuration(duration)}</div>
+      <div className="track__duration">{formatDuration(track.duration_ms)}</div>
 
       <Modal open={infoOpen} onClose={() => setInfoOpen(false)}>
         {loadingState === 'pending' && <span>Loading...</span>}
         {loadingState === 'error' && <span>Something went wring</span>}
-        {loadingState === 'done' && artistsMeta.map(artist => <ArtistDescription key={artist.id} artist={artist} />)}
+        {loadingState === 'done' && artists.map(artist => <ArtistDescription key={artist.id} artist={artist} />)}
       </Modal>
     </li>
   )
@@ -71,4 +84,4 @@ function formatDuration(ms: number): string {
   return `${leadZero(minutes)}:${leadZero(seconds)}`;
 }
 
-export default observer(Track);
+export default Track;
