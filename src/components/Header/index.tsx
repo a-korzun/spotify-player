@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
 import ThemeSwitcher from '@/components/ThemeSwitcher';
+import { PlaylistStore } from '@/stores/playlistStore';
 
 import './styles.scss';
-import { PlaylistStore } from '@/stores/playlistStore';
 
 function Header () {
   const { state } = useContext(PlaylistStore);
@@ -11,7 +11,7 @@ function Header () {
   return (
     <header className="header">
       <h1 className="header__title">Spotify Player</h1>
-      {state.isPlaying === true && <p className="header__current-track">{state.activeTrackName}</p>}
+      <p className="header__current-track" data-testid="header__current-track">{state.isPlaying === true && state.activeTrackName}</p>
       <ThemeSwitcher />
     </header>
   )

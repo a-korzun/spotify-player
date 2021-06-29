@@ -15,10 +15,10 @@ export const fetchArtists = async () => {
   }
 };
 
-export const fetchPlaylist = async () => {
+export const fetchPlaylist = async (accessToken: string, playlistID: string): Promise<PlaylistPreview> => {
   return {
-    id: '1',
-    name: 'playlist 1',
+    id: playlistID,
+    name: 'playlist ' + playlistID,
     tracks: {
       total: 99,
     },
@@ -26,24 +26,18 @@ export const fetchPlaylist = async () => {
   }
 }
 
-export const fetchTracks = async (accessToken: string, playlistID: string, offset = 0) => {
+export const fetchTracks = async (accessToken: string, playlistID: string, offset = 0): Promise<Playlist> => {
   return {
     items: Array.from({ length: 100 }, () => ({
       track: {
         id: '1',
         name: 'foo',
-        track_number: '1',
-        href: 'http://spotify.com/v1/foo',
-        duration_ms: '999',
+        preview_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        duration_ms: 999,
         artists: [{ id: '1', name: 'foo' }],
       }
     })),
     limit: 100,
-    offset,
     total: 300,
   };
-}
-
-export const fetchAudio = async (accessToken: string, id: string) => {
-  return 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 }

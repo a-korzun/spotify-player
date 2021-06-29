@@ -4,7 +4,7 @@ import './styles.scss';
 
 type Theme = 'dark' | 'light';
 
-const defaultTheme: Theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const defaultTheme: Theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
 const toggleRules: Record<Theme, Theme> = {
   dark: 'light',

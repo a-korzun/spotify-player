@@ -66,7 +66,7 @@ function Library() {
   ));
 
   return (
-    <ul className="library">
+    <ul className="library" data-testid="library">
       {loadingState === 'pending' && <div className="library__placeholder">Loading...</div>}
       {loadingState === 'error' && <div className="library__placeholder">Something went wrong</div>}
       {loadingState === 'done' && list}

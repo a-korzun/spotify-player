@@ -20,7 +20,7 @@ function App() {
   );
 }
 
-function Layout() {
+export function Layout() {
   const { state: authState, dispatch } = useContext(AuthStore);
 
   useEffect(() => {
