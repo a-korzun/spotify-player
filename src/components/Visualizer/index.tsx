@@ -1,14 +1,10 @@
-import React, { useEffect, useContext } from 'react';
-
-import { PlaylistStore } from '@/stores/playlistStore';
+import React, { useEffect } from 'react';
 interface Props {
   audio?: HTMLAudioElement;
   className?: string;
-  onDestroy?: () => void;
 }
 
-function Visualizer({ className, audio, onDestroy }: Props) {
-  const { state } = useContext(PlaylistStore);
+function Visualizer({ className, audio }: Props) {
   const canvasRef = React.createRef<HTMLCanvasElement>();
 
   useEffect(() => {
@@ -72,10 +68,11 @@ function Visualizer({ className, audio, onDestroy }: Props) {
       source.disconnect(audioCtx.destination);
       audioCtx.close();
 
-      // In order to avoid bug with reusing same audio element, I decided to reinit audio object here
-      onDestroy && onDestroy();
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
     }
-  }, [state.activeTrackID]);
+  }, [audio]);
 
   return (
     <canvas className={className} width="100" height="30" ref={canvasRef} />

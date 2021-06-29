@@ -78,21 +78,6 @@ function Player({ name, id, url }: Props) {
     }
   }
 
-  const handleVisualizationDestroy = async () => {
-    setLoadingState('pending');
-    try {
-      const audio = await initAudio(url);
-
-      setAudio(audio);
-
-      setLoadingState('done');
-    } catch (err) {
-      console.error(err);
-
-      setLoadingState('error');
-    }
-  }
-
   if (loadingState === 'error') {
     return (
       <div className="player">
@@ -109,19 +94,12 @@ function Player({ name, id, url }: Props) {
     );
   }
 
-
-  if (state.isPlaying === true && state.activeTrackID === id) {
-    return (
-      <div className="player">
-        <button className="player__button" onClick={handleTogglePlayState}>⏸</button>
-        <Visualizer className="player__visualization" audio={audio} onDestroy={handleVisualizationDestroy}/>
-      </div>
-    )
-  }
-
   return (
     <div className="player">
-      <button className="player__button" onClick={handleTogglePlayState}>▶️</button>
+      <button className="player__button" onClick={handleTogglePlayState}>
+      { state.isPlaying === true && state.activeTrackID === id ? '⏸' : '▶️' }
+      </button>
+      <Visualizer className="player__visualization" audio={audio} />
     </div>
   )
 }
